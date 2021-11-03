@@ -24,3 +24,9 @@ Guide for this sample: https://code.visualstudio.com/api/extension-guides/web-ex
 - Run the `Run Web Extension` target in the Debug View. This will:
 	- Start a task `npm: watch` to compile the code
 	- Run the extension in a new VS Code window that contains a web extension host
+- To test in vscode.dev, run the following command in 3 terminal windows:
+	- `npm run watch-web`
+	- `npx serve --cors -l 5000`
+	- `npx localtunnel -p 5000`
+	Then install the extension via its URL at https://vscode.dev
+
