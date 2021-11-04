@@ -18,8 +18,12 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "helloworld-web-sample.helloWorld",
-				"title": "Hello World"
+				"command": "helloworld-web-sample.imagej-js",
+				"title": "ImageJ.JS"
+			},
+			{
+				"command": "helloworld-web-sample.itk-vtk-viewer",
+				"title": "ITK/VTK Viewer"
 			},
 			{
 				"command": "helloworld-web-sample.showSelectionCount",

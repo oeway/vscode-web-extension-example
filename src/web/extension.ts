@@ -15,15 +15,15 @@ export function activate(context: vscode.ExtensionContext) {
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('helloworld-web-sample.helloWorld', () => {
+	context.subscriptions.push(vscode.commands.registerCommand('helloworld-web-sample.imagej-js', () => {
 		// The code you place here will be executed every time your command is executed
 		// Display a message box to the user
 		vscode.window.showInformationMessage('Hello World from helloworld-web-sample in a web extension host!');
 
 		// Create and show panel
 		const panel = vscode.window.createWebviewPanel(
-			'catCoding',
-			'Cat Coding',
+			'ImageJ.JS',
+			'ImageJ.JS',
 			vscode.ViewColumn.One,
 			{ // Enable scripts in the webview
 				enableScripts: true, //Set this to true if you want to enable Javascript. 
@@ -32,10 +32,45 @@ export function activate(context: vscode.ExtensionContext) {
         );
 
         // And set its HTML content
-        panel.webview.html = getWebviewContent();
-	});
+        panel.webview.html = getWebviewContent("https://ij.imjoy.io/");
+	}));
 
-	context.subscriptions.push(disposable);
+    context.subscriptions.push(vscode.commands.registerCommand('helloworld-web-sample.itk-vtk-viewer', () => {
+		// Create and show panel
+		const panel = vscode.window.createWebviewPanel(
+			'ITK/VTK Viewer',
+			'ITK/VTK Viewer',
+			vscode.ViewColumn.One,
+			{ // Enable scripts in the webview
+				enableScripts: true, //Set this to true if you want to enable Javascript. 
+				retainContextWhenHidden: true,
+			}
+        );
+
+        // And set its HTML content
+        panel.webview.html = `
+        <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>ITK VTK Viewer</title></title>
+            </head>
+            <body>
+            <div
+            style="float: left; display: inline-block; border: 2px solid gray;width: 100%;height: 100vh;";
+            class="itk-vtk-viewer"
+            data-url="https://data.kitware.com/api/v1/file/5b8446868d777f43cc8d5ec1/download/data.nrrd"
+            data-viewport="450x400"
+            data-background-color="ffffff"
+            ></div>
+                <script type="text/javascript" src="https://oeway.github.io/itk-vtk-viewer/itkVtkViewerCDN.js"></script>
+
+            </body>
+        </html>`
+	}));
+
+
 
 	console.log('MemFS says "Hello"');
 
@@ -61,10 +96,8 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.commands.registerCommand('memfs.addFile', _ => {
         const enc = new TextEncoder(); // always utf-8
         const content = enc.encode("This is a string converted to a Uint8Array")
-        memFs.writeFile(vscode.Uri.parse(`memfs:/file.txt`), content, { create: true, overwrite: true });
+        memFs.writeFile(vscode.Uri.parse(`memfs:/new_file.txt`), content, { create: true, overwrite: true });
         vscode.window.showInformationMessage('File added!');
-
-    
     }));
 
     context.subscriptions.push(vscode.commands.registerCommand('memfs.deleteFile', _ => {
@@ -82,16 +115,16 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 
-function getWebviewContent() {
+function getWebviewContent(url: string) {
 	return `<!DOCTYPE html>
   <html lang="en">
   <head>
 	  <meta charset="UTF-8">
 	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	  <title>Cat Coding</title>
+	  <title>ImageJ.JS</title></title>
   </head>
   <body>
-	  <iframe src="https://kaibu.org/#/app" width="100%" style="height: 100vh;" height="100%"></iframe>
+	  <iframe src="${url}" width="100%" style="height: 100vh; border:none;" height="100%"></iframe>
   </body>
   </html>`;
 }
